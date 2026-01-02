@@ -1,0 +1,28 @@
+PROBLEM:
+Convert (0,3) to polar coordinates
+
+LEAN CODE:
+import Mathlib
+
+open Real
+
+-- One clean way to formalize “(0,3) in polar coordinates” is to show that
+-- r = 3 and θ = π/2 reproduce the point via (r*cos θ, r*sin θ).
+theorem cartesian_to_polar_0_3 :
+    (3 * Real.cos (Real.pi / 2), 3 * Real.sin (Real.pi / 2)) = (0 : ℝ, 3 : ℝ) := by
+  -- Use the standard trig values at π/2
+  simp
+RESULT: ✗ /Users/jp7467/Desktop/learning_from_interactions/lean_project/Scratch.lean:8:69: error: unexpected t
+COMMENT: In Lean you must write the pair as `((3 * Real.cos (Real.pi / 2)) : ℝ, (3 * Real.sin (Real.pi / 2)) : ℝ)` (or use `Prod.mk`) because `(0 : ℝ, 3 : ℝ)` is a syntax error, and the intended polar coordinates are \(r=3\) and \(\theta=\pi/2\).
+LEAN CODE:
+import Mathlib
+
+open Real
+
+theorem cartesian_to_polar_0_3 :
+    (3 * Real.cos (Real.pi / 2), 3 * Real.sin (Real.pi / 2)) = ((0 : ℝ), (3 : ℝ)) := by
+  simp
+RESULT: ✓ Success
+COMMENT: The point \((0,3)\) in polar coordinates is \((r,\theta)=(3,\pi/2)\), as shown by \((3\cos(\pi/2),3\sin(\pi/2))=(0,3)\).
+
+✓ Proof found!
