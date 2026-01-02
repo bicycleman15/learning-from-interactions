@@ -1,1 +1,9 @@
-Find the constant term in the expansion of (10x^3 - 1/(2x^2))^5
+Let X be the answer to the Q1:
+
+Q1: There are 27 unicorns left in the world. One third of them are in the Scottish Highlands. Two thirds of the Scottish
+unicorns are female. How many female Scottish unicorns are there?
+
+Solve it and use the value of X to solve Q2.
+
+Q2: Zack’s locker is half as big as Timothy’s locker. Peter’s locker is 1/4 as big as Zack’s locker. If Peter’s locker is X cubic
+inches, how big is Timothy’s locker in cubic inches?

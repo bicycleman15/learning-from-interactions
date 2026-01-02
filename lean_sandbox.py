@@ -217,6 +217,9 @@ Also, try to have both Lean and Math mistakes in your agent simulation, so that 
 But don't have too much mistakes, there should be a balance :)
 
 Also, don't use Lean always, there should be some cases where agent solves the problem directly too without interaction with lean.
+Don't let the agent do any sanity checks on top of Lean's outputs, they are always correct :)
+
+Have some trajectories from which the agent corrects math mistakes from the Lean output log!
 
 PROBLEM:
 {problem}
