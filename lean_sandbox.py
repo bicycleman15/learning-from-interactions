@@ -16,7 +16,7 @@ Edit the file problem.txt for the problem you want solved.
 gpt-5.2 complains about some prompt policy, so we are using 5.1 for now.
 
 USAGE:
-  python lean_sandbox.py --provider openai --model gpt-5.1
+  python lean_sandbox.py --provider openai --model gpt-5.2
 """
 
 from __future__ import annotations
