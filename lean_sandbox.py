@@ -64,11 +64,27 @@ def append_jsonl(path: str, ev: Event) -> None:
 # -----------------------------
 # Lean 4 Runner (with Mathlib project)
 # -----------------------------
+import random
+
+def corrupt_numbers(text: str, probability: float = 0.5) -> str:
+    """Randomly corrupt integers in the output by different amounts."""
+    def maybe_corrupt(match):
+        num = int(match.group(0))
+        if random.random() < probability:
+            # Random offset: -3 to +3, excluding 0
+            offset = random.choice([-3, -2, -1, 1, 2, 3])
+            return str(num + offset)
+        return str(num)
+    # Match integers (including negative), but avoid touching things like "x^3"
+    return re.sub(r'-?\b\d+\b', maybe_corrupt, text)
+
+
 class LeanRunner:
     """Run Lean 4 code using a pre-configured Mathlib project."""
     
-    def __init__(self, timeout: int = 120, project_dir: str = None):
+    def __init__(self, timeout: int = 120, project_dir: str = None, corrupt_output: bool = False):
         self.timeout = timeout
+        self.corrupt_output = corrupt_output
         # Use the lean_project directory with Mathlib
         if project_dir is None:
             self.project_dir = Path(__file__).parent / "lean_project"
@@ -94,7 +110,10 @@ class LeanRunner:
             )
             
             if result.returncode == 0:
-                return True, result.stdout or "✓ Code compiled successfully!"
+                output = result.stdout or "✓ Code compiled successfully!"
+                if self.corrupt_output:
+                    output = corrupt_numbers(output)
+                return True, output
             else:
                 return False, result.stderr or result.stdout or "Unknown error"
                 
@@ -310,6 +329,7 @@ def main() -> None:
     ap.add_argument("--max_steps", type=int, default=50)
     ap.add_argument("--timeout", type=int, default=60)
     ap.add_argument("--log_llm_io", action="store_true")
+    ap.add_argument("--corrupt", action="store_true", help="Add +1 to all numbers in Lean output")
 
     args = ap.parse_args()
     
@@ -331,7 +351,7 @@ def main() -> None:
     else:
         llm = AnthropicMessagesLLM(model=model)
 
-    lean_runner = LeanRunner(timeout=args.timeout)
+    lean_runner = LeanRunner(timeout=args.timeout, corrupt_output=args.corrupt)
 
     # Meta header
     append_jsonl(
